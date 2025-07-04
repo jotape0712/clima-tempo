@@ -1,0 +1,14 @@
+## Comandos
+
+npx create react vita@latest
+npm i
+
+npm run dev // Roda o comando dev, que roda a aplicação!
+
+## Biblioteca
+
+npm install axios
+
+## Chave API
+9e009d53824c2ceb2a854663a63e5abc
+
