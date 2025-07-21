@@ -61,29 +61,30 @@ function WeatherInformations({ weather }) {
         </div>
       </div>
 
-      {/* Detalhes Principais do Tempo */}
+      {/* Detalhes Principais do Tempo - Organizados em duas colunas */}
       <div className="weather-details-clean">
-        <div className="detail-group">
-          <div className="detail-title">Umidade</div>
-          <div className="detail-value-large">{weather.main.humidity}%</div>
+        <div className="details-column">
+          <div className="detail-group">
+            <div className="detail-title">💧 Umidade</div>
+            <div className="detail-value-large">{weather.main.humidity}%</div>
+          </div>
+          
+          <div className="detail-group">
+            <div className="detail-title">👁️ Visibilidade</div>
+            <div className="detail-value-large">{((weather.visibility || 0) / 1000).toFixed(1)} <span className="unit">km</span></div>
+          </div>
         </div>
         
-        <div className="detail-group">
-          <div className="detail-title">Vento</div>
-          <div className="detail-value-large">{(weather.wind?.speed * 3.6).toFixed(1)}</div>
-          <div className="detail-subtitle">km/h {getWindDirection(weather.wind?.deg)}</div>
-        </div>
-        
-        <div className="detail-group">
-          <div className="detail-title">Pressão</div>
-          <div className="detail-value-large">{weather.main.pressure}</div>
-          <div className="detail-subtitle">hPa</div>
-        </div>
-        
-        <div className="detail-group">
-          <div className="detail-title">Visibilidade</div>
-          <div className="detail-value-large">{((weather.visibility || 0) / 1000).toFixed(1)}</div>
-          <div className="detail-subtitle">km</div>
+        <div className="details-column">
+          <div className="detail-group">
+            <div className="detail-title">🌡️ Pressão</div>
+            <div className="detail-value-large">{weather.main.pressure} <span className="unit">hPa</span></div>
+          </div>
+          
+          <div className="detail-group">
+            <div className="detail-title">💨 Vento</div>
+            <div className="detail-value-large">{(weather.wind?.speed * 3.6).toFixed(1)} <span className="unit">km/h</span></div>
+          </div>
         </div>
       </div>
 

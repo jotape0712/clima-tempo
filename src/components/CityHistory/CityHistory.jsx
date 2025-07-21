@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './CityHistory.css';
 
-function CityHistory({ onCitySelect, currentCity }) {
+function CityHistory({ onCitySelect, currentCity, showOnlyFavoriteButton = false, showOnlyList = false }) {
   const [favorites, setFavorites] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [showHistory, setShowHistory] = useState(false);
@@ -78,6 +78,127 @@ function CityHistory({ onCitySelect, currentCity }) {
     }
   }, [currentCity?.id]);
 
+  // Se for para mostrar apenas o botão de favorito
+  if (showOnlyFavoriteButton) {
+    return (
+      <button 
+        className={`favorite-btn ${isFavorite(currentCity.id) ? 'favorited' : ''}`}
+        onClick={() => isFavorite(currentCity.id) 
+          ? removeFromFavorites(currentCity.id)
+          : addToFavorites(currentCity)
+        }
+        title={isFavorite(currentCity.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+      >
+        {isFavorite(currentCity.id) ? '❤️' : '🤍'}
+      </button>
+    );
+  }
+
+  // Se for para mostrar apenas a lista (página de histórico)
+  if (showOnlyList) {
+    return (
+      <div className="history-page-list">
+        {/* Favoritos */}
+        {favorites.length > 0 && (
+          <div className="history-section">
+            <div className="section-header">
+              <h2 className="section-title">⭐ Favoritos</h2>
+              <button 
+                className="clear-section-btn"
+                onClick={() => {
+                  setFavorites([]);
+                  localStorage.removeItem('weatherFavorites');
+                }}
+              >
+                Limpar
+              </button>
+            </div>
+            
+            <div className="history-grid">
+              {favorites.map((city) => (
+                <div key={city.id} className="history-card">
+                  <div 
+                    className="card-content"
+                    onClick={() => onCitySelect(city.name)}
+                  >
+                    <div className="city-name-card">{city.name}</div>
+                    <div className="city-country-card">{city.country}</div>
+                  </div>
+                  <button 
+                    className="remove-card-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFromFavorites(city.id);
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Buscas Recentes */}
+        {recentSearches.length > 0 && (
+          <div className="history-section">
+            <div className="section-header">
+              <h2 className="section-title">🕒 Buscas Recentes</h2>
+              <button 
+                className="clear-section-btn"
+                onClick={() => {
+                  setRecentSearches([]);
+                  localStorage.removeItem('weatherRecentSearches');
+                }}
+              >
+                Limpar
+              </button>
+            </div>
+            
+            <div className="history-grid">
+              {recentSearches.slice(0, 12).map((city) => (
+                <div key={`${city.id}-${city.timestamp}`} className="history-card">
+                  <div 
+                    className="card-content"
+                    onClick={() => onCitySelect(city.name)}
+                  >
+                    <div className="city-name-card">{city.name}</div>
+                    <div className="city-details-card">
+                      {city.country} • {formatTimeAgo(city.timestamp)}
+                    </div>
+                  </div>
+                  <button 
+                    className="remove-card-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const updatedRecents = recentSearches.filter(
+                        recent => recent.timestamp !== city.timestamp
+                      );
+                      setRecentSearches(updatedRecents);
+                      localStorage.setItem('weatherRecentSearches', JSON.stringify(updatedRecents));
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Estado Vazio */}
+        {favorites.length === 0 && recentSearches.length === 0 && (
+          <div className="empty-history-page">
+            <div className="empty-icon">🌤️</div>
+            <div className="empty-message">Nenhum histórico ainda</div>
+            <div className="empty-subtitle">Pesquise por cidades para ver o histórico aqui</div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Renderização da sidebar original (caso não seja nenhum dos modos especiais)
   return (
     <>
       {/* Botão de Toggle */}
