@@ -1,0 +1,249 @@
+/* WeatherInformations - Design Limpo e Unificado */
+.weather-container {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.03) 0%, 
+    rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin: 1.5rem 0;
+  color: #ffffff;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cabeçalho da Cidade - Simples */
+.weather-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.city-name {
+  font-size: 2.8rem;
+  font-weight: 300;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.5px;
+}
+
+/* Informações Principais - Layout Grid Limpo */
+.weather-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+  align-items: center;
+}
+
+.temperature-section {
+  text-align: center;
+}
+
+.current-temp {
+  font-size: 5rem;
+  font-weight: 100;
+  color: #ffffff;
+  line-height: 1;
+  margin: 0;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+}
+
+.temp-unit {
+  font-size: 2.5rem;
+  opacity: 0.7;
+}
+
+.condition {
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.5rem 0 0 0;
+  font-weight: 300;
+}
+
+.feels-like {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0.3rem 0 0 0;
+}
+
+.weather-icon-section {
+  text-align: center;
+}
+
+.weather-icon {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+/* Detalhes do Tempo - Grid Limpo */
+.weather-details-clean {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.detail-group {
+  text-align: center;
+  padding: 1rem;
+}
+
+.detail-title {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.detail-value-large {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #ffffff;
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.detail-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0.2rem 0 0 0;
+}
+
+/* Informações Extras - Layout Horizontal */
+.weather-extras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.extra-item {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.extra-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.3rem;
+}
+
+.extra-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* Última Atualização */
+.update-info {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .weather-container {
+    padding: 1.8rem;
+    margin: 1rem 0;
+  }
+  
+  .weather-main-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .city-name {
+    font-size: 2.2rem;
+  }
+  
+  .current-temp {
+    font-size: 4rem;
+  }
+  
+  .weather-icon {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .weather-details-clean {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .weather-extras {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .weather-container {
+    padding: 1.5rem;
+  }
+  
+  .city-name {
+    font-size: 1.8rem;
+  }
+  
+  .current-temp {
+    font-size: 3.2rem;
+  }
+  
+  .weather-icon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .weather-details-clean {
+    grid-template-columns: 1fr;
+  }
+  
+  .weather-extras {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .detail-value-large {
+    font-size: 1.6rem;
+  }
+}
+
+/* Animações Suaves */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.weather-container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.weather-main-grid > * {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.weather-details-clean > * {
+  animation: fadeInUp 1s ease-out;
+}
