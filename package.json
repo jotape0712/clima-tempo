@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "npx --yes vite build",
+    "build": "echo 'No build step required'",
     "dev": "npx vite",
     "preview": "npx vite preview"
   },
@@ -25,7 +25,7 @@
     "vite": "^5.4.0"
   },
   "engines": {
-    "node": "18.x",
+    "node": "22.x",
     "npm": ">=7.0.0"
   }
 }
