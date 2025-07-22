@@ -3,7 +3,7 @@
 export const API_CONFIG = {
   // WeatherAPI.com - Oferece dados históricos gratuitos limitados
   WEATHER_API: {
-    KEY: 'b8f7c6e5d4a3b2c1f9e8d7c6b5a4f3e2', // Substitua pela sua chave real
+    KEY: import.meta.env.VITE_WEATHER_API_KEY || 'b8f7c6e5d4a3b2c1f9e8d7c6b5a4f3e2', // Substitua pela sua chave real
     BASE_URL: 'https://api.weatherapi.com/v1',
     FEATURES: {
       historical: true,
@@ -15,7 +15,7 @@ export const API_CONFIG = {
   
   // OpenWeatherMap - Fallback
   OPENWEATHER: {
-    KEY: 'sua_chave_openweather', // Mantém a chave atual
+    KEY: import.meta.env.VITE_OPENWEATHER_API_KEY || 'sua_chave_openweather', // Mantém a chave atual
     BASE_URL: 'https://api.openweathermap.org/data/2.5',
     FEATURES: {
       historical: false,

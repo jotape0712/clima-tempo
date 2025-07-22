@@ -14,7 +14,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home'); // 'home' ou 'history'
   const inputRef = useRef();
 
-  const API_KEY = "9e009d53824c2ceb2a854663a63e5abc";
+  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || "9e009d53824c2ceb2a854663a63e5abc";
 
   // Função principal para buscar dados meteorológicos
   async function searchWeather(searchQuery, isCoordinate = false) {

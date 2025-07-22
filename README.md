@@ -18,4 +18,28 @@ Um aplicativo web moderno, desenvolvido em **React + Vite**, que permite consult
 ✅ Layout moderno, responsivo e tema escuro   
 ✅ Feito com React + Hooks (useState, useRef)
 
+## 🔧 Configuração e Deploy
+
+### Variáveis de Ambiente
+
+Para o deploy em produção, configure as seguintes variáveis de ambiente:
+
+```bash
+VITE_OPENWEATHER_API_KEY=sua_chave_da_openweathermap
+VITE_WEATHER_API_KEY=sua_chave_da_weatherapi
+```
+
+### Deploy no Vercel
+
+1. Configure as variáveis de ambiente no painel do Vercel
+2. O projeto já inclui configuração otimizada no `vercel.json`
+3. Build automático com `npm run build`
+
+### Instalação Local
+
+```bash
+npm install
+npm run dev
+```
+
 https://clima-tempo-g9aq.vercel.app/
