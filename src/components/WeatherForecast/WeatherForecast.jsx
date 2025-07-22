@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getWeatherApiUrl, getOpenWeatherUrl } from '../../config/apiConfig';
+import { buildWeatherApiUrl, buildOpenWeatherForecastUrl } from '../../config/apiConfig';
 import './WeatherForecast.css';
 
 function WeatherForecast({ city, apiKey }) {
@@ -21,19 +21,16 @@ function WeatherForecast({ city, apiKey }) {
     setError(null);
     
     try {
-      // Usar WeatherAPI.com para dados mais completos (incluindo histórico do dia atual)
-      const weatherApiUrl = getWeatherApiUrl(city, 6);
+      const weatherApiUrl = buildWeatherApiUrl(city, 6);
       
       const response = await axios.get(weatherApiUrl);
       
-      // Processar dados da WeatherAPI
       const dailyForecasts = processWeatherApiData(response.data);
       setForecast(dailyForecasts);
     } catch (err) {
       console.error("Erro ao buscar previsão:", err);
-      // Fallback para OpenWeatherMap se WeatherAPI falhar
       try {
-        const fallbackUrl = getOpenWeatherUrl(city, apiKey);
+        const fallbackUrl = buildOpenWeatherForecastUrl(city, apiKey);
         const fallbackResponse = await axios.get(fallbackUrl);
         const dailyForecasts = groupForecastsByDay(fallbackResponse.data.list);
         setForecast(dailyForecasts);
@@ -45,11 +42,9 @@ function WeatherForecast({ city, apiKey }) {
     }
   };
 
-  // Nova função para processar dados da WeatherAPI.com
   const processWeatherApiData = (data) => {
     const dailyForecasts = [];
     
-    // Processar dados atuais e históricos do dia atual
     const today = new Date();
     const currentDay = {
       date: today,
@@ -59,12 +54,11 @@ function WeatherForecast({ city, apiKey }) {
         description: data.current.condition.text.toLowerCase()
       },
       humidity: data.current.humidity,
-      windSpeed: data.current.wind_kph / 3.6, // Converter km/h para m/s para compatibilidade
+      windSpeed: data.current.wind_kph / 3.6,
       clouds: data.current.cloud,
       feelsLike: data.current.feelslike_c
     };
 
-    // Se existirem dados históricos/atuais mais completos para hoje
     if (data.forecast && data.forecast.forecastday && data.forecast.forecastday[0]) {
       const todayForecast = data.forecast.forecastday[0];
       currentDay.minTemp = todayForecast.day.mintemp_c;
@@ -75,7 +69,6 @@ function WeatherForecast({ city, apiKey }) {
     
     dailyForecasts.push(currentDay);
 
-    // Processar previsões futuras
     if (data.forecast && data.forecast.forecastday) {
       data.forecast.forecastday.slice(1, 5).forEach(day => {
         dailyForecasts.push({
@@ -86,9 +79,9 @@ function WeatherForecast({ city, apiKey }) {
             description: day.day.condition.text.toLowerCase()
           },
           humidity: day.day.avghumidity,
-          windSpeed: day.day.maxwind_kph / 3.6, // Converter km/h para m/s
-          clouds: day.day.avgvis_km < 10 ? 80 : 20, // Estimativa baseada na visibilidade
-          feelsLike: (day.day.mintemp_c + day.day.maxtemp_c) / 2 // Estimativa
+          windSpeed: day.day.maxwind_kph / 3.6,
+          clouds: day.day.avgvis_km < 10 ? 80 : 20,
+          feelsLike: (day.day.mintemp_c + day.day.maxtemp_c) / 2
         });
       });
     }
@@ -122,7 +115,7 @@ function WeatherForecast({ city, apiKey }) {
       dailyData[dayKey].maxTemp = Math.max(dailyData[dayKey].maxTemp, item.main.temp);
     });
     
-    return Object.values(dailyData).slice(0, 5); // Primeiros 5 dias
+    return Object.values(dailyData).slice(0, 5);
   };
 
   const formatDate = (date) => {

@@ -1,42 +1,66 @@
-# 🌤️ Weather App
+# 🌤️ Clima Tempo
 
-Um aplicativo web moderno, desenvolvido em **React + Vite**, que permite consultar a previsão do tempo em tempo real para qualquer cidade do mundo, utilizando múltiplas APIs de clima para maior precisão e confiabilidade.
+Uma aplicação web moderna para consulta de previsão do tempo em tempo real, desenvolvida com React + Vite.
 
 ## 🚀 Tecnologias
 
-- React
+- React 19
 - Vite
-- Axios (para requisições HTTP)
+- Axios
 - OpenWeatherMap API
-- WeatherAPI (implementada em 21/07/2025)
+- CSS3
 
----
+## ✨ Funcionalidades
 
-## 📂 Funcionalidades
+- Busca por cidade com previsão atual
+- Detecção automática de localização
+- Histórico de cidades pesquisadas
+- Sistema de cidades favoritas
+- Previsão estendida de 5 dias
+- Interface responsiva e moderna
+- Tema escuro otimizado
 
-✅ Buscar cidade e exibir clima atual  
-✅ Mostrar temperatura, sensação térmica, descrição do clima e ícone do clima  
-✅ Layout moderno, responsivo e tema escuro   
-✅ Feito com React + Hooks (useState, useRef)  
-✅ **NOVO:** Sistema de fallback com múltiplas APIs para maior confiabilidade  
-✅ **NOVO:** Melhor precisão nos dados meteorológicos
+## 🛠️ Instalação e Uso
 
-## 🆕 Atualização 21/07/2025
+```bash
+# Clone o repositório
+git clone https://github.com/jotape0712/clima-tempo.git
 
-### Principais Mudanças:
+# Entre no diretório
+cd clima-tempo
 
-- **🔄 Nova API Implementada**: Adicionada WeatherAPI como fonte alternativa de dados meteorológicos
-- **⚡ Sistema de Fallback**: Se uma API falhar, o sistema automaticamente utiliza a API alternativa
-- **📈 Maior Confiabilidade**: Redução significativa de falhas na busca por dados do clima
-- **🔧 Otimizações**: Melhorias na performance e tratamento de erros
-- **🌐 Cobertura Ampliada**: Melhor cobertura geográfica com duas fontes de dados
-- **🎨 Melhorias de Interface**: 
-  - Design mais moderno e intuitivo
-  - Animações suaves de transição
-  - Melhor feedback visual durante carregamento
-  - Ícones do clima mais precisos e coloridos
-  - Layout responsivo aprimorado para dispositivos móveis
-  - Estados de erro mais informativos e amigáveis
- 
- URL: https://previsaotempo-pi.vercel.app/
+# Instale as dependências
+npm install
+
+# Execute em modo de desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+```
+
+## 🌐 Deploy
+
+A aplicação está disponível em: https://previsaotempo-pi.vercel.app/
+
+## � Configuração
+
+Para usar sua própria chave da API, crie um arquivo `.env` na raiz do projeto:
+
+```env
+VITE_OPENWEATHER_API_KEY=sua_chave_aqui
+```
+
+## 📦 Estrutura do Projeto
+
+```
+src/
+├── components/          # Componentes React
+├── config/             # Configurações da API
+├── constants/          # Constantes da aplicação
+├── hooks/              # Hooks customizados
+├── services/           # Serviços de API
+├── utils/              # Funções utilitárias
+└── assets/             # Recursos estáticos
+```
 

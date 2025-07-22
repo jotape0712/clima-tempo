@@ -1,35 +1,47 @@
-// Configurações das APIs de Clima
-
 export const API_CONFIG = {
-  // WeatherAPI.com - Oferece dados históricos gratuitos limitados
-  WEATHER_API: {
-    KEY: import.meta.env.VITE_WEATHER_API_KEY || 'b8f7c6e5d4a3b2c1f9e8d7c6b5a4f3e2', // Substitua pela sua chave real
-    BASE_URL: 'https://api.weatherapi.com/v1',
+  OPENWEATHER: {
+    KEY: import.meta.env.VITE_OPENWEATHER_API_KEY || "9e009d53824c2ceb2a854663a63e5abc",
+    BASE_URL: 'https://api.openweathermap.org/data/2.5',
     FEATURES: {
-      historical: true,
-      forecast: true,
       current: true,
-      maxDays: 10
+      forecast: true,
+      maxDays: 5,
+      units: 'metric',
+      language: 'pt_br'
     }
   },
   
-  // OpenWeatherMap - Fallback
-  OPENWEATHER: {
-    KEY: import.meta.env.VITE_OPENWEATHER_API_KEY || 'sua_chave_openweather', // Mantém a chave atual
-    BASE_URL: 'https://api.openweathermap.org/data/2.5',
+  WEATHER_API: {
+    KEY: import.meta.env.VITE_WEATHER_API_KEY || 'b8f7c6e5d4a3b2c1f9e8d7c6b5a4f3e2',
+    BASE_URL: 'https://api.weatherapi.com/v1',
     FEATURES: {
-      historical: false,
-      forecast: true,
       current: true,
-      maxDays: 5
+      forecast: true,
+      historical: true,
+      maxDays: 10,
+      language: 'pt'
     }
   }
 };
 
-export const getWeatherApiUrl = (city, days = 6) => {
-  return `${API_CONFIG.WEATHER_API.BASE_URL}/forecast.json?key=${API_CONFIG.WEATHER_API.KEY}&q=${city}&days=${days}&lang=pt&aqi=no`;
+export const buildOpenWeatherCurrentUrl = (query, isCoordinate = false) => {
+  const { KEY, BASE_URL, FEATURES } = API_CONFIG.OPENWEATHER;
+  const baseParams = `appid=${KEY}&lang=${FEATURES.language}&units=${FEATURES.units}`;
+  
+  if (isCoordinate) {
+    const [lat, lon] = query;
+    return `${BASE_URL}/weather?lat=${lat}&lon=${lon}&${baseParams}`;
+  }
+  
+  return `${BASE_URL}/weather?q=${query}&${baseParams}`;
 };
 
-export const getOpenWeatherUrl = (city, apiKey) => {
-  return `${API_CONFIG.OPENWEATHER.BASE_URL}/forecast?q=${city}&appid=${apiKey}&lang=pt_br&units=metric`;
+export const buildOpenWeatherForecastUrl = (city, apiKey) => {
+  const { BASE_URL, FEATURES } = API_CONFIG.OPENWEATHER;
+  return `${BASE_URL}/forecast?q=${city}&appid=${apiKey}&lang=${FEATURES.language}&units=${FEATURES.units}`;
+};
+
+export const buildWeatherApiUrl = (city, days = 6) => {
+  const { KEY, BASE_URL, FEATURES } = API_CONFIG.WEATHER_API;
+  return `${BASE_URL}/forecast.json?key=${KEY}&q=${city}&days=${days}&lang=${FEATURES.language}&aqi=no`;
 };

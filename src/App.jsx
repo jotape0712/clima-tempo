@@ -1,123 +1,47 @@
-import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useRef } from 'react';
 import './App.css';
+import { useWeather } from './hooks/useWeather';
+import { APP_CONFIG, PAGES } from './constants/appConstants';
+import { API_CONFIG } from './config/apiConfig';
 import WeatherInformations from './components/WeatherInformations/WeatherInformations';
 import CityHistory from './components/CityHistory/CityHistory';
 import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator';
 import WeatherForecast from './components/WeatherForecast/WeatherForecast';
 
 function App() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [currentCity, setCurrentCity] = useState('');
-  const [currentPage, setCurrentPage] = useState('home'); // 'home' ou 'history'
+  const [currentPage, setCurrentPage] = useState(PAGES.HOME);
   const inputRef = useRef();
+  
+  const {
+    weather,
+    loading,
+    error,
+    currentCity,
+    searchByCity,
+    setError
+  } = useWeather();
 
-  const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || "9e009d53824c2ceb2a854663a63e5abc";
-
-  // Função principal para buscar dados meteorológicos
-  async function searchWeather(searchQuery, isCoordinate = false) {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      let url;
-      if (isCoordinate) {
-        const [lat, lon] = searchQuery;
-        url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&lang=pt_br&units=metric`;
-      } else {
-        url = `https://api.openweathermap.org/data/2.5/weather?q=${searchQuery}&appid=${API_KEY}&lang=pt_br&units=metric`;
-      }
-
-      const response = await axios.get(url);
-      console.log('Dados meteorológicos:', response.data);
-      
-      setWeather(response.data);
-      setCurrentCity(response.data.name);
-      setError(null);
-      
-      // Limpar campo de input se não for busca por coordenadas
-      if (!isCoordinate && inputRef.current) {
-        inputRef.current.value = '';
-      }
-      
-    } catch (err) {
-      console.error("Erro ao buscar dados:", err);
-      let errorMessage = "Erro ao buscar dados meteorológicos";
-      
-      if (err.response?.status === 404) {
-        errorMessage = "Cidade não encontrada. Verifique o nome e tente novamente.";
-      } else if (err.response?.status === 401) {
-        errorMessage = "Erro de autenticação da API";
-      } else if (!navigator.onLine) {
-        errorMessage = "Sem conexão com a internet";
-      }
-      
-      setError(errorMessage);
-      setWeather(null);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // Busca por nome da cidade
   function searchCity() {
     const city = inputRef.current.value.trim();
-    if (!city) {
-      setError("Por favor, digite o nome de uma cidade");
-      return;
+    searchByCity(city);
+    if (inputRef.current) {
+      inputRef.current.value = '';
     }
-    
-    searchWeather(city);
   }
 
-  // Busca por geolocalização
-  function handleLocationFound(lat, lon) {
-    searchWeather([lat, lon], true);
-  }
-
-  // Busca por cidade do histórico
   function handleCitySelect(cityName) {
-    searchWeather(cityName);
-    setCurrentPage('home'); // Voltar para a página principal após selecionar cidade
+    searchByCity(cityName);
+    setCurrentPage(PAGES.HOME);
   }
 
-  // Função para navegar para a página de histórico
   function goToHistoryPage() {
-    setCurrentPage('history');
+    setCurrentPage(PAGES.HISTORY);
   }
 
-  // Função para voltar para a página principal
   function goToHomePage() {
-    setCurrentPage('home');
+    setCurrentPage(PAGES.HOME);
   }
 
-  // Buscar por cidade padrão ao carregar a página
-  useEffect(() => {
-    // Ativar loading inicial
-    setLoading(true);
-    
-    // Tentar obter localização automaticamente ao carregar
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          handleLocationFound(latitude, longitude);
-        },
-        () => {
-          // Se falhar, buscar por uma cidade padrão
-          searchWeather('São Paulo');
-        },
-        { timeout: 5000 }
-      );
-    } else {
-      // Se geolocalização não estiver disponível
-      searchWeather('São Paulo');
-    }
-  }, []);
-
-  // Permitir busca com Enter
   function handleKeyPress(event) {
     if (event.key === 'Enter') {
       searchCity();
@@ -126,12 +50,11 @@ function App() {
 
   return (
     <div className='app-container'>
-      {currentPage === 'home' ? (
-        // Página Principal
+      {currentPage === PAGES.HOME ? (
         <div className='container'>
           <header className='app-header'>
-            <h1 className='app-title'>🌤️ Clima Tempo</h1>
-            <p className='app-subtitle'>Previsão meteorológica completa e detalhada</p>
+            <h1 className='app-title'>🌤️ {APP_CONFIG.NAME}</h1>
+            <p className='app-subtitle'>{APP_CONFIG.SUBTITLE}</p>
           </header>
 
           <div className='search-section'>
@@ -155,7 +78,6 @@ function App() {
               </div>
             </div>
 
-            {/* Botões de ação */}
             <div className="action-buttons">
               <button 
                 className="history-page-btn"
@@ -188,7 +110,7 @@ function App() {
           {weather && !loading && (
             <div className='weather-section'>
               <WeatherInformations weather={weather} />
-              <WeatherForecast city={currentCity} apiKey={API_KEY} />
+              <WeatherForecast city={currentCity} apiKey={API_CONFIG.OPENWEATHER.KEY} />
             </div>
           )}
 
@@ -201,7 +123,6 @@ function App() {
           </div>
         </div>
       ) : (
-        // Página de Histórico
         <div className='history-page'>
           <header className='history-page-header'>
             <button 
