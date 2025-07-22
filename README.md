@@ -30,22 +30,11 @@ Um aplicativo web moderno, desenvolvido em **React + Vite**, que permite consult
 - **📈 Maior Confiabilidade**: Redução significativa de falhas na busca por dados do clima
 - **🔧 Otimizações**: Melhorias na performance e tratamento de erros
 - **🌐 Cobertura Ampliada**: Melhor cobertura geográfica com duas fontes de dados
+- **🎨 Melhorias de Interface**: 
+  - Design mais moderno e intuitivo
+  - Animações suaves de transição
+  - Melhor feedback visual durante carregamento
+  - Ícones do clima mais precisos e coloridos
+  - Layout responsivo aprimorado para dispositivos móveis
+  - Estados de erro mais informativos e amigáveis
 
-## 🔧 Configuração e Deploy
-
-### Variáveis de Ambiente
-
-Para o deploy em produção, configure as seguintes variáveis de ambiente:
-
-```bash
-VITE_OPENWEATHER_API_KEY=sua_chave_da_openweathermap
-VITE_WEATHER_API_KEY=sua_chave_da_weatherapi
-```
-
-### Deploy no Vercel
-
-1. Configure as variáveis de ambiente no painel do Vercel
-2. O projeto já inclui configuração otimizada no `vercel.json`
-3. Build automático com `npm run build`
-
-### Instalação Local
